@@ -1,0 +1,65 @@
+.heading {
+    font-size: 30px;
+    color: white;
+    font-style: initial;
+    text-align: center;
+    position: absolute;
+    top: 20px;          
+    left: 50%;           
+    transform: translateX(-50%); 
+}
+
+body{
+
+    background-image: url(background.jpg);
+    padding:0;
+    margin:0;
+    background-attachment:scroll;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+.weather-container {
+    margin-top: 270px;
+      background: rgb(63, 136, 206);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(79, 82, 234, 0.3);
+      text-align: center;
+      width: 500px;
+      margin-left: 470px;
+}
+    input {
+      padding: 10px;
+      font-size: 16px;
+      margin-right: 10px;
+      border-radius: 5px;
+      border: 1px solid #333;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background: #87bef9;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #result {
+  margin-top: 20px;
+  background: #ffffff;
+  color: #090909;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  font-size: 16px;
+}
+
+

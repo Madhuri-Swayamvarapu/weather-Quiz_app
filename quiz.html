@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CS & Engineering Quiz</title>
+  <style>
+    body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;     
+  background: linear-gradient(135deg,black,rgb(201, 78, 78), #764ba2,black);
+  background-size: cover;
+  font-family: Arial, sans-serif;
+}
+
+    
+
+    .quiz-container {
+ background: linear-gradient(135deg,black,rgb(236, 118, 118), #764ba2,black);
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  transition: all 0.5s ease;
+}
+
+
+
+    .quiz-container h1 {
+      color: #f3f0f0;
+    }
+
+    .question {
+        color: white;
+      font-size: 20px;
+      margin-bottom: 20px;
+      transition: opacity 0.5s ease;
+    }
+
+    .options {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .options li {
+      background: #98b8d0;
+      padding: 12px 18px;
+      margin: 10px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .options li:hover {
+      background: #b8ce8b;
+      transform: scale(1.02);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #004999;
+    }
+
+    .result {
+      font-size: 22px;
+      margin-top: 20px;
+      color: #f8f7f7;
+      transition: opacity 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <h1>CodeCrack Quiz</h1>
+    <div class="question" id="question">Question text</div>
+    <ul class="options" id="options"></ul>
+    <div>
+      <button class="btn" onclick="prevQuestion()">Previous</button>
+      <button class="btn" onclick="nextQuestion()">Next</button>
+    </div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const quiz = [
+      {
+        question: "Which data structure uses LIFO (Last In First Out)?",
+        options: ["Queue", "Stack", "Linked List", "Tree"],
+        answer: "Stack"
+      },
+      {
+        question: "Which language is primarily used for AI?",
+        options: ["C++", "Python", "HTML", "SQL"],
+        answer: "Python"
+      },
+      {
+        question: "What does CPU stand for?",
+        options: ["Central Performance Unit", "Central Processing Unit", "Control Program Unit", "Central Programming Unit"],
+        answer: "Central Processing Unit"
+      },
+      {
+        question: "Which of these is NOT an operating system?",
+        options: ["Linux", "Windows", "Oracle", "macOS"],
+        answer: "Oracle"
+      },
+      {
+        question: "Which is used for version control?",
+        options: ["Git", "FTP", "HTTP", "SMTP"],
+        answer: "Git"
+      },
+      {
+        question: "Which company developed the Java programming language?",
+        options: ["Microsoft", "Sun Microsystems", "Apple", "IBM"],
+        answer: "Sun Microsystems"
+      },
+      {
+        question: "Which symbol is used to denote an ID selector in CSS?",
+        options: [".", "#", "/", "@"],
+        answer: "#"
+      },
+      {
+        question: "Which protocol is used to transfer web pages?",
+        options: ["FTP", "SMTP", "HTTP", "POP3"],
+        answer: "HTTP"
+      },
+      {
+        question: "Which of these is a NoSQL database?",
+        options: ["MySQL", "PostgreSQL", "MongoDB", "Oracle"],
+        answer: "MongoDB"
+      },
+      {
+        question: "Which HTML tag is used to include JavaScript?",
+        options: ["<js>", "<javascript>", "<script>", "<link>"],
+        answer: "<script>"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    const answered = Array(quiz.length).fill(null);
+
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const resultEl = document.getElementById('result');
+
+    function loadQuestion() {
+      const q = quiz[currentQuestion];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+
+      q.options.forEach(option => {
+        const li = document.createElement('li');
+        li.textContent = option;
+        li.onclick = () => selectAnswer(li, option);
+        if (answered[currentQuestion] && answered[currentQuestion] === option) {
+          li.style.background = option === q.answer ? "#d4edda" : "#f8d7da";
+        }
+        optionsEl.appendChild(li);
+      });
+    }
+
+    function selectAnswer(element, selected) {
+      const q = quiz[currentQuestion];
+
+      // Mark answer
+      answered[currentQuestion] = selected;
+
+      if (selected === q.answer) {
+        element.style.background = "#d4edda"; 
+      } else {
+        element.style.background = "#f8d7da"; 
+      }
+
+      // Update score
+      score = answered.reduce((acc, val, idx) => {
+        if (val && val === quiz[idx].answer) return acc + 1;
+        return acc;
+      }, 0);
+
+ 
+      const allOptions = optionsEl.querySelectorAll('li');
+      allOptions.forEach(opt => opt.onclick = null);
+    }
+
+    function nextQuestion() {
+      if (currentQuestion < quiz.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion();
+      }
+    }
+
+    function showResult() {
+      questionEl.style.display = 'none';
+      optionsEl.style.display = 'none';
+      document.querySelectorAll('.btn').forEach(btn => btn.style.display = 'none');
+      resultEl.textContent = `Your Score: ${score} / ${quiz.length}`;
+    }
+
+    loadQuestion();
+  </script>
+
+</body>
+</html>
